@@ -1,134 +1,88 @@
 import re
 
-palavra = str("Olá Mundo!")
-print(palavra)
-
-#Binários pares
-texto = str(input("Digite um texto binário para ser detectado: "))
-print (texto)
-padrao_pares =  r'\b[01]*0\b'
-resultado = re.search(padrao_pares,texto)
-
-if resultado:
-    print("É binário par. ")
-else:
-    print("Não é par. ")  
+def validar_binario_par(texto):
+    padrao_pares =  r'\b[01]*0\b'
+    return bool(re.search(padrao_pares, texto))
 
 
-
-#Palavras (binárias) com 00 no final
-texto = str(input("Digite um texto binário para ser detectado se o final e 00: "))
-print (texto)
-padrao_pares_final = r'\b[01]*00\b'
-resultado = re.findall(padrao_pares_final,texto)
-
-if resultado:
-    print("São palavras binarias com 00 no final")
-else:
-    print("Não são palavras binários com 00 no final")  
-
-# Strings entre aspas
-texto = str(input("digite um texto qualquer:  "))
-
-padrao = r'(["\'])(?:(?=(\\?))\2.)*?\1'
-resultado = re.findall(padrao, texto)
-if resultado:
-    print("Strings entre aspas")
-else:
-   print ("String!")
-
-# telefones em SC
-telefone = str(input("Digite um numero de telefone: "))
-print (telefone)
-
-padrao_telefone1 = r'^(47|48|49)\d{4,5}\d{4}$'  
-padrao_telefone2 = r'^(47|48|49) \d{4,5}-\d{4}$' 
-padrao_telefone3 = r'^(47|48|49) 9 \d{4}-\d{4}$'
-padrao_telefone4 = r'^(47|48|49) 9 \d{8}$'
-def validar_telefone(telefone):
-    if re.match(padrao_telefone1, telefone):
-        return "Número de telefone 1 aceito!"
-    elif re.match(padrao_telefone2, telefone):
-        return "Número de telefone2  aceito!"
-    elif re.match(padrao_telefone3, telefone):
-        return "Número de telefone 3  aceito!"
-    elif re.match(padrao_telefone4, telefone):
-        return "Número de telefone 4 aceito!"
-    else:
-        return "Número de telefone não aceito!"
-    
-print(f"{telefone}: {validar_telefone(telefone)}")    
-        
+def validar_pinario_00_final(texto):
+    padrao_00_final = r'\b[01]*00\b'
+    return bool(re.findall(padrao_00_final,texto))
 
 
-# placas de veículos no Brasil
-placa = str(input("Digite a placa do seu veículo: "))
-print (placa)
-
-padrao_anterior = r'^[A-Z]{3}-\d{4}$'  
-padrao_atual = r'^[A-Z]{3}\d[A-Z]\d{2}$'
-
-def validar_placa_de_carro(placa):
-    if re.match(padrao_anterior, placa):
-        return "Placa do veículo padrão brasileiro aceito."
-   
-    elif re.match(padrao_atual, placa):
-        return "Placa do veículo padrão Mercosul aceito."
-    else: 
-        return "Padrão de placa não aceito"
-    
-print(f"{placa}: {validar_placa_de_carro(placa)}")    
-        
+def validar_string_entre_aspas(texto):
+    padrao_aspas =  r'(["\'])(?:(?=(\\?))\2.)*?\1'
+    return bool(re.findall(padrao_aspas, texto))
 
 
+def validar_telefone_sc(telefone):
+    padrao_telefone = [
+         r'^(47|48|49)\d{4,5}\d{4}$',  
+         r'^(47|48|49) \d{4,5}-\d{4}$',
+         r'^(47|48|49) 9 \d{4}-\d{4}$',
+         r'^(47|48|49) 9 \d{8}$'
+    ]
+    return any(re.match(padrao, telefone) for padrao in padrao_telefone)
 
-# email .br ou .com.br
-email = str(input("Digite seu e-mail: "))
-print (email)
-
-padrao_email = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(br|com\.br)$'
-
-def validar_email(email):
-    if re.match(padrao_email, email):
-        return "Email aceito!"
-    else: 
-        return "Não é email"
-   
-print(f"{email}: {validar_email(email)}")
-
+def validar_placa_veiculo(placa):
+    padrao_anterior = r'^[A-Z]{3}-\d{4}$'  
+    padrao_atual = r'^[A-Z]{3}\d[A-Z]\d{2}$'    
+    return bool(re.match(padrao_anterior, placa)) or bool(re.match(padrao_atual, placa))
 
 
-
-# comentários de linha //
-comentario = str(input("Agora escreva um comentario: "))
-print (comentario)
-
-padrao_comentario = r'^\/\/.*'
-
-# Função para verificar se uma linha é um comentário
-def e_comentario(cometario):
-    if re.match(padrao_comentario, cometario):
-        return "É comentario"
-    else:
-        return "Não é comentário"
-
-print(f"{e_comentario(comentario)}")
+def valida_email(email):
+    padrao_email = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(br|com\.br)$'
+    return bool(re.match(padrao_email, email))
 
 
+def e_comentario(comentario):
+    padrao_comentario = r'^\/\/.*'
+    return bool(re.match(padrao_comentario, comentario))
 
 
+def e_comentario_multiplas_linhas(comentario):
+    padrao_comentario = r'\/\*[\s\S]*?\*\/'
+    return bool(re.match(padrao_comentario, comentario))
 
-# comentários de múltiplas linhas /* ... */
-comentario_multiplas_linhas = str(input("Agora escreva um comentário em multiplas linhas: "))
-print (comentario_multiplas_linhas)
 
-padrao_comentario = r'\/\*[\s\S]*?\*\/'
+def main():
+     # binaários par
+    texto = input ("Digite um texto binário para ser detectado: ")
+    print("É binário par" if validar_binario_par(texto) else "Não é binriio par.") 
 
-# Função para verificar se uma linha é um comentário
-def e_comentario_de_multiplas_linhas(comentario_multiplas_linhas):
-    if re.match(padrao_comentario, comentario_multiplas_linhas):
-        return "E comentário de multiplas linhas"
-    else:
-        return "Não é comentário de multiplas"
+    # Palavras binárias com 00 no final
+    texto = input ("Digite um texto binário para ser detectado se o final é 00 : ")
+    print("São palavras binárias com 00 no final" if validar_pinario_00_final(texto) else "Não são plavras binárias com 00 no final")
 
-print(f"{e_comentario_de_multiplas_linhas(comentario_multiplas_linhas)}")
+
+    # Strings entre aspas
+    texto = input ("Digite um texto qualaquer: ")
+    print("São strings entre aspas" if validar_string_entre_aspas(texto) else "Não há string entre aspas!")
+
+
+    # Telefones em SC
+    telefone = input ("Digite um telefone para ser detectado: ")
+    print("É um telefone em SC" if validar_telefone_sc(telefone) else "Não é um telefone em SC!")
+
+
+    # Placas de veiculos no Brasil
+    placa = input ("Digite uma placa de veiculo para ser detectada: ")
+    print("É uma placa de veiculo no Brasil" if validar_placa_veiculo(placa) else "Não é uma placa de veiculo no Brasil")
+
+
+    #Email .br. ou .com.br
+    email = input ("Digite um e-mail para ser detectado: ")
+    print("É um email .br ou .com.br" if valida_email(email) else "Não é e-mail")
+
+
+    # Comentario de Linha //
+    comentario = input("Agora escreva um comentário: ")
+    print("É um comentário de linha" if e_comentario(comentario) else "Não é um comentario")
+
+
+    # Comentário de multiplas linhas /*...*/
+    comentario_multiplas_linhas = input("Agora esecreva um comentário de múltiplas linhas: ")
+    print("É um comentário de multiplas linhas" if e_comentario_multiplas_linhas(comentario_multiplas_linhas) else "Não é comentário de múltiplas linhas!")
+
+if __name__ == "__main__":
+    main()
