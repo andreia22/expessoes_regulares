@@ -5,7 +5,7 @@ def validar_binario_par(texto):
     return bool(re.search(padrao_pares, texto))
 
 
-def validar_pinario_00_final(texto):
+def validar_binario_00_final(texto):
     padrao_00_final = r'\b[01]*00\b'
     return bool(re.findall(padrao_00_final,texto))
 
@@ -52,7 +52,7 @@ def main():
 
     # Palavras binárias com 00 no final
     texto = input ("Digite um texto binário para ser detectado se o final é 00 : ")
-    print("São palavras binárias com 00 no final" if validar_pinario_00_final(texto) else "Não são plavras binárias com 00 no final")
+    print("São palavras binárias com 00 no final" if validar_binario_00_final(texto) else "Não são plavras binárias com 00 no final")
 
 
     # Strings entre aspas
@@ -75,13 +75,13 @@ def main():
     print("É um email .br ou .com.br" if valida_email(email) else "Não é e-mail")
 
 
-    # Comentario de Linha //
+    # Comentário de uma  Linha //
     comentario = input("Agora escreva um comentário: ")
-    print("É um comentário de linha" if e_comentario(comentario) else "Não é um comentario")
+    print("É um comentário de linha" if e_comentario(comentario) else "Não é um comentário")
 
 
     # Comentário de multiplas linhas /*...*/
-    comentario_multiplas_linhas = input("Agora esecreva um comentário de múltiplas linhas: ")
+    comentario_multiplas_linhas = input("Agora escreva um comentário de múltiplas linhas: ")
     print("É um comentário de multiplas linhas" if e_comentario_multiplas_linhas(comentario_multiplas_linhas) else "Não é comentário de múltiplas linhas!")
 
 if __name__ == "__main__":
